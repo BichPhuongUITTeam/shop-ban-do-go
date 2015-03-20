@@ -1,77 +1,80 @@
-ZendSkeletonApplication
+SHOP BÁN ĐỒ GỖ
 =======================
 
-Introduction
+Giới thiệu
 ------------
-This is a simple, skeleton application using the ZF2 MVC layer and module
-systems. This application is meant to be used as a starting place for those
-looking to get their feet wet with ZF2.
+Shop bán đồ gỗ phát triển từ Zend Framework 2
 
-Installation
+Copyright 2015 bởi **BichPhuongUITTeam**.
+
+Cài đặt
 ------------
 
-Using Composer (recommended)
+Dùng Git (khuyên dùng)
 ----------------------------
-The recommended way to get a working copy of this project is to clone the repository
-and use `composer` to install dependencies using the `create-project` command:
+<!-- Sử dụng `composer` để cài đặt nhanh hơn so với thông thường.
+
+Dùng  `composer` để cài đặt các gói phụ thuộc, dùng lệnh `create-project`:
 
     curl -s https://getcomposer.org/installer | php --
-    php composer.phar create-project -sdev --repository-url="https://packages.zendframework.com" zendframework/skeleton-application path/to/install
+    php composer.phar create-project -sdev --repository-url="https://packages.zendframework.com" zendframework/skeleton-application path/to/install -->
 
-Alternately, clone the repository and manually invoke `composer` using the shipped
-`composer.phar`:
+Cài đặt Git (hướng dẫn cho Ubuntu)
+
+    sudo apt-get install git
+
+Đối với Windows bạn có thể sử dụng **GitHub** hoặc **SourceTree**.
+
+Clone source về máy tính và sử dụng `composer` để cập nhật các gói phụ trợ dùng file `composer.phar` đã có sẵn trong source:
 
     cd my/project/dir
-    git clone git://github.com/zendframework/ZendSkeletonApplication.git
-    cd ZendSkeletonApplication
+    git clone git://github.com/BichPhuongUITTeam/shop-ban-do-go.git
+    cd shop-ban-do-go
     php composer.phar self-update
     php composer.phar install
 
-(The `self-update` directive is to ensure you have an up-to-date `composer.phar`
-available.)
+(`self-update` dùng để cập nhật `composer` (file `composer.phar`)).
 
-Another alternative for downloading the project is to grab it via `curl`, and
-then pass it to `tar`:
+### Cấu hình kết nối database cho ứng dụng
 
-    cd my/project/dir
-    curl -#L https://github.com/zendframework/ZendSkeletonApplication/tarball/master | tar xz --strip-components=1
+Tạo mới file `config/autoload/local.php` và copy nội dụng từ fỉle `config/autoload/local.php.dist` sang.
 
-You would then invoke `composer` to install dependencies per the previous
-example.
+Cấu hình lại các thông số trong file `local.php`: `dbname`, `host`, `username`, `password` cho phù hợp.
 
-Using Git submodules
---------------------
-Alternatively, you can install using native git submodules:
+### Cấu hình debug tool cho ứng dụng
 
-    git clone git://github.com/zendframework/ZendSkeletonApplication.git --recursive
+Mở file `config/application.config.php`.
 
-Web Server Setup
-----------------
+Uncomment hoặc thêm vào như sau:
 
-### PHP CLI Server
+    'modules' => array(
+        'Application',
+        'ZendDeveloperTools',
+        'BjyProfiler',
+    ),
 
-The simplest way to get started if you are using PHP 5.4 or above is to start the internal PHP cli-server in the root directory:
+Copy file `bjyprofiler.local.php` và `zenddevelopertools.local.php` trong folder `resources\local_files` vào folder `config\autoload`.
 
-    php -S 0.0.0.0:8080 -t public/ public/index.php
+### Cấu hình domain ảo trong Apache
 
-This will start the cli-server on port 8080, and bind it to all network
-interfaces.
-
-**Note: ** The built-in CLI server is *for development only*.
-
-### Apache Setup
-
-To setup apache, setup a virtual host to point to the public/ directory of the
-project and you should be ready to go! It should look something like below:
+ Mở file `apache/conf/extra/httpd-vhosts.conf` và thêm vào:
 
     <VirtualHost *:80>
-        ServerName zf2-tutorial.localhost
-        DocumentRoot /path/to/zf2-tutorial/public
+        ServerName shopdogo.dev
+        DocumentRoot /path/to/shop-ban-go-go/public
         SetEnv APPLICATION_ENV "development"
-        <Directory /path/to/zf2-tutorial/public>
+        <Directory /path/to/shop-ban-go-go/public>
             DirectoryIndex index.php
             AllowOverride All
             Order allow,deny
             Allow from all
         </Directory>
     </VirtualHost>
+
+Chắc chắn đã bỏ comment dòng:
+
+    NameVirtualHost *:80
+
+Chạy domain `http://shopdogo.dev`. Nếu bị lỗi 403 thì thêm vào dưới dòng `Allow from all`:
+
+    Require all granted
