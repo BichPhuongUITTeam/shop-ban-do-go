@@ -1,6 +1,6 @@
 <?php
 $dbParams = array(
-    'database'  => 'zend_two',
+    'database'  => 'shopdogo',
     'username'  => 'root',
     'password'  => 'root',
     'hostname'  => 'localhost',
