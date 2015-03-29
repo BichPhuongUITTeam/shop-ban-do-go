@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -18,4 +19,3 @@
 chdir(__DIR__);
 
 $loader = include './../vendor/autoload.php';
-$loader->add('SanSessionToolbarTest', __DIR__.'/SanSessionToolbarTest');

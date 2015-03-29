@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -15,28 +16,32 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
+
 namespace SanSessionToolbar\Collector;
 
+use SanSessionToolbar\Manager\SessionManagerInterface;
 use SanSessionToolbar\Manager\SessionManager;
 use ZendDeveloperTools\Collector\AbstractCollector;
 use Zend\Mvc\MvcEvent;
 
 /**
  * Session Data Collector.
+ *
  * @author Abdul Malik Ikhsan <samsonasik@gmail.com>
  */
 class SessionCollector extends AbstractCollector
 {
     /**
-     * @var SessionManager
+     * @var SessionManagerInterface
      */
     protected $sessionManager;
 
     /**
-     * Construct
+     * Construct.
+     *
      * @param SessionManager $sessionManager
      */
-    public function __construct(SessionManager $sessionManager)
+    public function __construct(SessionManagerInterface $sessionManager)
     {
         $this->sessionManager = $sessionManager;
     }
@@ -68,14 +73,14 @@ class SessionCollector extends AbstractCollector
     }
 
     /**
-     * Get Session data as array
+     * Get Session data as array.
      *
      * @return array
      */
     public function getSessionData()
     {
         // need this because current ZDT can't detect property of object that setted via factory
-        if (! $this->sessionManager) {
+        if (!$this->sessionManager) {
             $this->sessionManager = new SessionManager();
         }
 

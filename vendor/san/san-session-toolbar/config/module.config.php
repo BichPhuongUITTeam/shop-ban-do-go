@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -15,6 +16,7 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
+
 return array(
 
     'controllers' => array(
@@ -42,6 +44,9 @@ return array(
     ),
 
     'service_manager' => array(
+        'invokables' => array(
+            'SanSessionManager' => 'SanSessionToolbar\Manager\SessionManager',
+        ),
         'factories' => array(
             'session.toolbar' => 'SanSessionToolbar\Factory\Collector\SessionCollectorFactory',
         ),
@@ -49,8 +54,8 @@ return array(
 
     'view_manager' => array(
         'template_map' => array(
-            'zend-developer-tools/toolbar/session-data' => __DIR__.'/../view/zend-developer-tools/toolbar/session-data.phtml',
-            'zend-developer-tools/toolbar/session-data-reload' => __DIR__.'/../view/zend-developer-tools/toolbar/session-data-reload.phtml',
+            'zend-developer-tools/toolbar/session-data' => __DIR__ . '/../view/zend-developer-tools/toolbar/session-data.phtml',
+            'zend-developer-tools/toolbar/session-data-reload' => __DIR__ . '/../view/zend-developer-tools/toolbar/session-data-reload.phtml',
         ),
         'strategies' => array(
             'ViewJsonStrategy',

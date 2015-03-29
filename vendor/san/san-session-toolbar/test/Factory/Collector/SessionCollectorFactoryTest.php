@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -15,60 +16,48 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
-namespace SanSessionToolbarTest\Factory\Controller;
+
+namespace SanSessionToolbarTest\Factory\Collector;
 
 use PHPUnit_Framework_TestCase;
-use SanSessionToolbar\Factory\Controller\SessionToolbarControllerFactory;
-use Zend\Mvc\Controller\ControllerManager;
+use SanSessionToolbar\Factory\Collector\SessionCollectorFactory;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * This class tests SessionToolbarControllerFactory class
+ * This class tests SessionCollectorFactory class.
+ *
  * @author Abdul Malik Ikhsan <samsonasik@gmail.com>
  */
-class SessionToolbarControllerFactoryTest extends PHPUnit_Framework_TestCase
+class SessionCollectorFactoryTest extends PHPUnit_Framework_TestCase
 {
-    /** @var SessionToolbarControllerFactory */
+    /** @var SessionCollectorFactory */
     protected $factory;
-
-    /** @var ControllerManager */
-    protected $controllerManager;
 
     /** @var ServiceLocatorInterface */
     protected $serviceLocator;
 
     protected function setUp()
     {
-        /** @var ControllerManager $controllerManager */
-        $controllerManager = $this->getMock('Zend\Mvc\Controller\ControllerManager');
-        $this->controllerManager = $controllerManager;
-
         /** @var ServiceLocatorInterface $serviceLocator */
         $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
         $this->serviceLocator = $serviceLocator;
 
-        $controllerManager->expects($this->any())
-                          ->method('getServiceLocator')
-                          ->willReturn($serviceLocator);
-
-        $factory = new SessionToolbarControllerFactory();
+        $factory = new SessionCollectorFactory();
         $this->factory = $factory;
     }
 
     /**
-     * @covers SanSessionToolbar\Factory\Controller\SessionToolbarControllerFactory::createService
+     * @covers SanSessionToolbar\Factory\Collector\SessionCollectorFactory::__invoke
      */
     public function testCreateService()
     {
-        $mockViewRenderer = $this->getMock('Zend\View\Renderer\RendererInterface');
-        $this->serviceLocator->expects($this->at(0))
-                             ->method('get')
-                             ->with('ViewRenderer')
-                             ->willReturn($mockViewRenderer);
-
         $sessionManager = $this->getMock('SanSessionToolbar\Manager\SessionManagerInterface');
+        $this->serviceLocator->expects($this->once())
+                             ->method('get')
+                             ->with('SanSessionManager')
+                             ->willReturn($sessionManager);
 
-        $result = $this->factory->createService($this->controllerManager);
-        $this->assertInstanceOf('SanSessionToolbar\Controller\SessionToolbarController', $result);
+        $result = $this->factory->__invoke($this->serviceLocator);
+        $this->assertInstanceOf('SanSessionToolbar\Collector\SessionCollector', $result);
     }
 }

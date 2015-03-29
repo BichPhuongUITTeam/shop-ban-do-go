@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -15,26 +16,32 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
-namespace SanSessionToolbar\Factory\Collector;
 
-use SanSessionToolbar\Collector\SessionCollector;
-use SanSessionToolbar\Manager\SessionManager;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+namespace SanSessionToolbar;
+
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\DependencyIndicatorInterface;
 
 /**
- * Factory class for SessionCollector creation
  * @author Abdul Malik Ikhsan <samsonasik@gmail.com>
  */
-class SessionCollectorFactory implements FactoryInterface
+class Module implements
+    ConfigProviderInterface,
+    DependencyIndicatorInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function getConfig()
     {
-        return new SessionCollector(
-            new SessionManager()
-        );
+        return include __DIR__ . '/../config/module.config.php';
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getModuleDependencies()
+    {
+        return array('ZendDeveloperTools');
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -15,19 +16,22 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
+
 namespace SanSessionToolbar\Manager;
 
 use Zend\Session\Container;
 use Zend\Stdlib\ArrayObject;
 
 /**
- * A class to manage session data
+ * A class to manage session data.
+ *
  * @author Abdul Malik Ikhsan <samsonasik@gmail.com>
  */
 final class SessionManager implements SessionManagerInterface
 {
     /**
-     * Get Session Data
+     * Get Session Data.
+     *
      * @return array
      */
     public function getSessionData()
@@ -43,7 +47,7 @@ final class SessionManager implements SessionManagerInterface
             if ($row instanceof ArrayObject) {
                 $iterator = $row->getIterator();
                 while ($iterator->valid()) {
-                    $data[$key][$iterator->key()] =  $iterator->current();
+                    $data[$key][$iterator->key()] = $iterator->current();
                     $iterator->next();
                 }
             }
@@ -53,33 +57,76 @@ final class SessionManager implements SessionManagerInterface
     }
 
     /**
-     * Set/Unset Session by Container and its key
+     * Add/Set/Unset Session by Container and its key.
+     *
      * @param string $containerName
      * @param string $keysession
      * @param string $value
-     * @param bool   $set
+     * @param array  $options
      */
-    public function sessionSetting($containerName, $keysession, $value = null, $set = true)
+    public function sessionSetting($containerName, $keysession, $value = null, $options = array())
     {
-        if (is_string($containerName) && is_string($keysession)) {
-            $container = new Container($containerName);
-            if ($container->offsetExists($keysession)) {
-                if ($set) {
-                    $container->offsetSet($keysession, $value);
-                } else {
-                    $container->offsetUnset($keysession);
-                }
+        $container = new Container($containerName);
+        $set = (!empty($options['set'])) ? $options['set'] : false;
+        $new = (!empty($options['new'])) ? $options['new'] : false;
 
-                return true;
+        if ($new) {
+            return $this->addSession($container, $keysession, $value);
+        }
+
+        return $this->setUnset($container, $keysession, $value, $set);
+    }
+
+    /**
+     * Add new session data.
+     *
+     * @param Container $container
+     * @param string    $keysession
+     * @param string    $value
+     *
+     * @return bool
+     */
+    private function addSession(Container $container, $keysession, $value)
+    {
+        if ($container->offsetExists($keysession)) {
+            return false;
+        }
+
+        $container->offsetSet($keysession, $value);
+
+        return true;
+    }
+
+    /**
+     * Set/Unset session data.
+     *
+     * @param Container   $container
+     * @param string      $keysession
+     * @param string|bool $value
+     * @param bool|false  $set
+     *
+     * @return bool
+     */
+    private function setUnset(Container $container, $keysession, $value = null, $set = false)
+    {
+        if ($container->offsetExists($keysession)) {
+            if ($set) {
+                $container->offsetSet($keysession, $value);
+            } else {
+                $container->offsetUnset($keysession);
             }
+
+            return true;
         }
 
         return false;
     }
 
     /**
-     * Clear Session
-     * @param  null|string $byContainer
+     * Clear Session.
+     *
+     * @param null|string $byContainer
+     *
      * @return array
      */
     public function clearSession($byContainer = null)

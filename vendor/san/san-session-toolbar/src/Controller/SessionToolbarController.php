@@ -1,4 +1,5 @@
 <?php
+
 /**
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -15,6 +16,7 @@
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the MIT license.
  */
+
 namespace SanSessionToolbar\Controller;
 
 use SanSessionToolbar\Manager\SessionManagerInterface;
@@ -24,7 +26,8 @@ use Zend\View\Model\JsonModel;
 use Zend\View\Renderer\RendererInterface;
 
 /**
- * Session Toolbar Controller
+ * Session Toolbar Controller.
+ *
  * @author Abdul Malik Ikhsan <samsonasik@gmail.com>
  */
 final class SessionToolbarController extends AbstractActionController
@@ -40,7 +43,8 @@ final class SessionToolbarController extends AbstractActionController
     private $sessionManager;
 
     /**
-     * Construct
+     * Construct.
+     *
      * @param RendererInterface $viewRenderer
      * @param SessionManager    $sessionManager
      */
@@ -51,17 +55,18 @@ final class SessionToolbarController extends AbstractActionController
     }
 
     /**
-     * Remove Session by Container and its key
+     * Remove Session by Container and its key.
      */
     public function removesessionAction()
     {
         $success = false;
-        if ($this->request->isPost()) {
-            $containerName = $this->request->getPost('containerName', 'Default');
-            $keysession    = $this->request->getPost('keysession', '');
+        $request = $this->getEvent()->getRequest();
+        if ($request->isPost()) {
+            $containerName = $request->getPost('containerName', 'Default');
+            $keysession    = $request->getPost('keysession', '');
 
             $success = $this->sessionManager
-                            ->sessionSetting($containerName, $keysession, null, false);
+                            ->sessionSetting($containerName, $keysession);
         }
 
         return new JsonModel(array(
@@ -70,7 +75,7 @@ final class SessionToolbarController extends AbstractActionController
     }
 
     /**
-     * Reload Session data
+     * Reload Session data.
      */
     public function reloadsessionAction()
     {
@@ -85,14 +90,14 @@ final class SessionToolbarController extends AbstractActionController
     }
 
     /**
-     * Clear Session data
+     * Clear Session data.
      */
     public function clearsessionAction()
     {
         $sessionData = $this->sessionManager->getSessionData();
-
-        if ($this->request->isPost() && !empty($sessionData)) {
-            $sessionData = $this->sessionManager->clearSession($this->request->getPost('byContainer'));
+        $request = $this->getEvent()->getRequest();
+        if ($request->isPost() && !empty($sessionData)) {
+            $sessionData = $this->sessionManager->clearSession($request->getPost('byContainer'));
         }
 
         $renderedContent = $this->viewRenderer
@@ -104,36 +109,56 @@ final class SessionToolbarController extends AbstractActionController
     }
 
     /**
-     * Save Session by Container and its key
+     * Save Session by Container and its key.
      */
     public function savesessionAction()
     {
         $success = false;
-        $errorMessages = array();
+        $errorMessage = '';
+        $request = $this->getEvent()->getRequest();
 
-        if ($this->request->isPost()) {
-            $containerName = $this->request->getPost('containerName', 'Default');
-            $keysession    = $this->request->getPost('keysession', '');
-            $sessionValue  = $this->request->getPost('sessionvalue');
+        if ($request->isPost()) {
+            $containerName = $request->getPost('containerName', 'Default');
+            $keysession    = $request->getPost('keysession', '');
+            $sessionValue  = $request->getPost('sessionvalue');
+            $new           = $request->getPost('new', false);
 
-            $notEmptyValidator = new NotEmpty();
-            if (! $notEmptyValidator->isValid($sessionValue)) {
-                $success = false;
-                $errorMessages[$keysession][] = $notEmptyValidator->getMessages();
-            } else {
-                $success = $this->sessionManager
-                            ->sessionSetting($containerName, $keysession, $sessionValue, true);
-            }
+            $processSetOrAddSessionData = $this->setOrAddSession($containerName, $keysession, $sessionValue, (bool) $new);
+            $success                    = (!is_string($processSetOrAddSessionData)) ? $processSetOrAddSessionData : false;
+            $errorMessage = (!is_string($processSetOrAddSessionData)) ? '' : $processSetOrAddSessionData;
         }
 
-        $sessionData = $this->sessionManager->getSessionData();
+        $sessionData     = $this->sessionManager->getSessionData();
         $renderedContent = $this->viewRenderer
                                 ->render('zend-developer-tools/toolbar/session-data-reload', array('san_sessiontoolbar_data' => $sessionData));
 
         return new JsonModel(array(
             'success' => $success,
-            'errorMessages' => $errorMessages,
+            'errorMessage' => $errorMessage,
             'san_sessiontoolbar_data_renderedContent' => $renderedContent,
         ));
+    }
+
+    /**
+     * Set or Add Session Data Process.
+     *
+     * @param string $containerName
+     * @param string $keysession
+     * @param string $sessionValue
+     * @param bool   $new
+     *
+     * @return bool|string
+     */
+    private function setOrAddSession($containerName, $keysession, $sessionValue, $new)
+    {
+        $notEmptyValidator = new NotEmpty();
+        if ($notEmptyValidator->isValid($keysession) && $notEmptyValidator->isValid($sessionValue)) {
+            $success = $this->sessionManager
+                            ->sessionSetting($containerName, $keysession, $sessionValue, array('set' => true, 'new' => $new));
+
+            return $success;
+        }
+
+        return 'Value is required and can\'t be empty';
     }
 }
