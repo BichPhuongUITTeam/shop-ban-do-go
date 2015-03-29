@@ -15,12 +15,20 @@ $form->prepare();
     echo $this->formHidden($form->get('id'));
     ?>
     <div class="form-group">
-        <label for="title">Title</label>
-        <?php echo $this->formRow($form->get('title')); ?>
+        <label for="title">Username</label>
+        <?php echo $this->formRow($form->get('username')); ?>
     </div>
     <div class="form-group">
-        <label for="title">Artist</label>
-        <?php echo $this->formRow($form->get('artist')); ?>
+        <label for="title">Email</label>
+        <?php echo $this->formRow($form->get('email')); ?>
+    </div>
+    <div class="form-group">
+        <label for="title">Full name</label>
+        <?php echo $this->formRow($form->get('full_name')); ?>
+    </div>
+    <div class="form-group">
+        <label for="title">Password</label>
+        <?php echo $this->formRow($form->get('password')); ?>
     </div>
     <div class="form-group">
         <?php echo $this->formSubmit($form->get('submit')); ?>
