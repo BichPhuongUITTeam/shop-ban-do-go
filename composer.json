@@ -15,6 +15,6 @@
         "san/san-session-toolbar": "0.1.*@dev"
     },
     "autoload": {
-     "psr-0": { "User": "module/User/src/" },
+     "psr-0": { "User": "module/User/src/" }
     }
 }
