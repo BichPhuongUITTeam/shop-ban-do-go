@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', TRUE);
+ini_set('display_startup_errors', TRUE);
 return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
@@ -63,7 +66,7 @@ return array(
     //     ),
     // )
 
-   // Initial configuration with which to seed the ServiceManager.
-   // Should be compatible with Zend\ServiceManager\Config.
-   // 'service_manager' => array(),
+    // Initial configuration with which to seed the ServiceManager.
+    // Should be compatible with Zend\ServiceManager\Config.
+    // 'service_manager' => array(),
 );
