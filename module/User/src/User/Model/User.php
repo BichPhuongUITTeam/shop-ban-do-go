@@ -106,11 +106,11 @@ class User implements InputFilterAwareInterface
                         'name' => 'NotEmpty',
                         ),
                     array(
-                        'name' => 'StringLength',
+                        'name' => 'EmailAddress',
                         'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
+                            'message' => array(
+                                \Zend\Validator\EmailAddress::INVALID_FORMAT => 'Email address format is invalid',
+                            ),
                         ),
                     ),
                 ),
