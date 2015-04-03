@@ -33,8 +33,8 @@ class UserController extends AbstractActionController
 
     public function registerAction() {
         $view = new ViewModel();
-        // $view->setTemplate('user/user/add.phtml')
-             // ->setTerminal(true);
+//        $view->setTemplate('user/user/add.phtml')
+//        $view->setTerminal(true);
         $form = new UserForm();
         $form->get('submit')->setValue('Register');
 
@@ -103,7 +103,7 @@ class UserController extends AbstractActionController
 //        Get the user with specification id.
 //        An exception is thrown if it cannot be found, in which case go to index page.
         try {
-            $user = $this->getUserTable()->getUser($id);
+            $user = $this->getUserTable()->getUserById($id);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('user', array('action' => 'index'));
         }
@@ -155,7 +155,7 @@ class UserController extends AbstractActionController
 
         return array(
             'id' => $id,
-            'user' => $this->getUserTable()->getUser($id),
+            'user' => $this->getUserTable()->getUserById($id),
         );
     }
 
