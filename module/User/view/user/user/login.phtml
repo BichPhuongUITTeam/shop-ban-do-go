@@ -1,8 +1,35 @@
 <?php
-// module/Album/view/users/user/login.phtml:
-$title = 'Login page';
+// module/User/view/user/user/login.phtml:
+
+$title = 'Login';
 $this->headTitle($title);
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
-<p> This page will hold the content for the login form.</p>
-<a href="/user"><< Back to Home</a>
+<?php
+$form->setAttribute('action', $this->url('user', array('action' => 'login')));
+$form->prepare();
+?>
+<div class="col-md-4 col-md-offset-4">
+    <h1>
+        <?php echo $this->escapeHtml($title); ?>
+        <?php echo $message; ?>
+    </h1>
+    <?php
+    echo $this->form()->openTag($form);
+    ?>
+    <div class="form-group">
+        <label for="username">Username*</label>
+        <?php echo $this->formRow($form->get('username')); ?>
+    </div>
+    <div class="form-group">
+        <label for="password">Password*</label>
+        <?php echo $this->formRow($form->get('password')); ?>
+    </div>
+    <div class="checkbox">
+        <label for="remember-me">Remember me</label>
+        <?php echo $this->formCheckbox($form->get('remember_me')); ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formSubmit($form->get('submit')); ?>
+        <a href="<?php echo $this->url('user', array('action' => 'index'));?>" class="btn btn-danger">Cancel</a>
+    </div>
+    <?php echo $this->form()->closeTag(); ?>
