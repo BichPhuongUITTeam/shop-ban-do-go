@@ -7,6 +7,8 @@ use User\Model\User;
 use User\Model\UserTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Adapter\DbTable;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -43,6 +45,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new User());
                     return new TableGateway('user', $dbAdapter, null, $resultSetPrototype);
                 },
+                'User\Model\AppAuthStorage' => function($sm) {
+                    return new \User\Model\AppAuthStorage("honviet");
+                },
+                'AuthService' => function($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $dbTable = new DbTable($dbAdapter, 'user', 'username', 'password');
+                    $authService = new AuthenticationService();
+                    $authService->setAdapter($dbTable);
+                    $authService->setStorage($sm->get('User\Model\AppAuthStorage'));
+                    return $authService;
+                }
             ),
         );
     }
