@@ -24,7 +24,7 @@ class UserTable
 		$rowset = $this->tableGateway->select(array('id' => $id));
 		$row = $rowset->current();
 		if (!$row) {
-			throw new \Exception("Could not find row $id");
+			throw new \Exception("Could not find user has ID = $id");
 		}
 		return $row;
 	}
@@ -43,6 +43,9 @@ class UserTable
 		if ($id === 0) {
 			$data['created_at'] = $data['updated_at'] = date("Y-m-d H:i:s");
 			$this->tableGateway->insert($data);
+			$id = $this->tableGateway->lastInsertValue;
+			$update_data['creator_id'] = $id;
+			$this->tableGateway->update($update_data, array('id' => $id));
 		} else {
             if ($this->getUser($id)) {
             	$data['updated_at'] = date("Y-m-d H:i:s");
