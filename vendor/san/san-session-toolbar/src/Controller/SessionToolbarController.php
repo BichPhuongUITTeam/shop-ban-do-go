@@ -113,8 +113,7 @@ final class SessionToolbarController extends AbstractActionController
      */
     public function savesessionAction()
     {
-        $success = false;
-        $errorMessage = '';
+        $processSetOrAddSessionData = array('success' => false, 'errorMessage' => '');
         $request = $this->getEvent()->getRequest();
 
         if ($request->isPost()) {
@@ -124,8 +123,6 @@ final class SessionToolbarController extends AbstractActionController
             $new           = $request->getPost('new', false);
 
             $processSetOrAddSessionData = $this->setOrAddSession($containerName, $keysession, $sessionValue, (bool) $new);
-            $success                    = (!is_string($processSetOrAddSessionData)) ? $processSetOrAddSessionData : false;
-            $errorMessage = (!is_string($processSetOrAddSessionData)) ? '' : $processSetOrAddSessionData;
         }
 
         $sessionData     = $this->sessionManager->getSessionData();
@@ -133,8 +130,8 @@ final class SessionToolbarController extends AbstractActionController
                                 ->render('zend-developer-tools/toolbar/session-data-reload', array('san_sessiontoolbar_data' => $sessionData));
 
         return new JsonModel(array(
-            'success' => $success,
-            'errorMessage' => $errorMessage,
+            'success' => $processSetOrAddSessionData['success'],
+            'errorMessage' => $processSetOrAddSessionData['errorMessage'],
             'san_sessiontoolbar_data_renderedContent' => $renderedContent,
         ));
     }
@@ -156,9 +153,9 @@ final class SessionToolbarController extends AbstractActionController
             $success = $this->sessionManager
                             ->sessionSetting($containerName, $keysession, $sessionValue, array('set' => true, 'new' => $new));
 
-            return $success;
+            return array('success' => $success, 'errorMessage' => '');
         }
 
-        return 'Value is required and can\'t be empty';
+        return array('success' => false, 'errorMessage' => 'Value is required and can\'t be empty');
     }
 }

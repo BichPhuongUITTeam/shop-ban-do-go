@@ -63,6 +63,8 @@ final class SessionManager implements SessionManagerInterface
      * @param string $keysession
      * @param string $value
      * @param array  $options
+     *
+     * @return bool
      */
     public function sessionSetting($containerName, $keysession, $value = null, $options = array())
     {
@@ -131,18 +133,27 @@ final class SessionManager implements SessionManagerInterface
      */
     public function clearSession($byContainer = null)
     {
-        $sessionData = $this->getSessionData();
-        foreach ($sessionData as $containerName => $session) {
+        foreach ($this->getSessionData() as $containerName => $sessions) {
             if ($byContainer !== null && $containerName !== $byContainer) {
                 continue;
             }
-
-            $container = new Container($containerName);
-            foreach ($session as $keysession => $rowsession) {
-                $container->offsetUnset($keysession);
-            }
+            $this->unsetAllSessionDataInContainer($containerName, $sessions);
         }
 
         return $this->getSessionData();
+    }
+
+    /**
+     * Unset All session data in Container.
+     *
+     * @param string $containerName
+     * @param array  $sessions
+     */
+    private function unsetAllSessionDataInContainer($containerName, $sessions)
+    {
+        $container = new Container($containerName);
+        foreach ($sessions as $keysession => $rowsession) {
+            $container->offsetUnset($keysession);
+        }
     }
 }
