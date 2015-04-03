@@ -11,7 +11,6 @@ $form->prepare();
 <div class="col-md-4 col-md-offset-4">
     <h1>
         <?php echo $this->escapeHtml($title); ?>
-        <?php echo $message; ?>
     </h1>
     <?php
     echo $this->form()->openTag($form);
@@ -33,3 +32,15 @@ $form->prepare();
         <a href="<?php echo $this->url('user', array('action' => 'index'));?>" class="btn btn-danger">Cancel</a>
     </div>
     <?php echo $this->form()->closeTag(); ?>
+</div>
+<div class="row">
+    <?php
+        if ($this->message) {
+            echo '<ul>';
+            foreach ($this->message as $message) {
+                echo '<li>' . $message . '</li>';
+            }
+            echo '</ul>';
+        }
+    ?>
+</div>
