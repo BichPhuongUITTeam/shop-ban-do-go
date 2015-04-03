@@ -5,15 +5,15 @@ $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
 <p>
-    <a href="<?php echo $this->url('user', array('action'=>'add'));?>" class="btn btn-default">Thêm user mới</a>
+    <a href="<?php echo $this->url('user', array('action'=>'add'));?>" class="btn btn-default">Add new user</a>
 </p>
 
 <table class="table">
     <tr>
         <th>Username</th>
         <th>Email</th>
-        <th>Họ và tên</th>
-        <th>Ngày đăng ký</th>
+        <th>Full name</th>
+        <th>Created at</th>
         <!-- <th>Người tạo</th> -->
         <th>&nbsp;</th>
     </tr>
