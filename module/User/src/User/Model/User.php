@@ -180,13 +180,13 @@ class User implements InputFilterAwareInterface
             $inputFilter = new InputFilter();
 
             // User ID
-            $inputFilter->add(array(
-                'name' => 'id',
-                'required' => true,
-                'filters' => array(
-                    array('name' => 'int'),
-                ),
-            ));
+//            $inputFilter->add(array(
+//                'name' => 'id',
+//                'required' => true,
+//                'filters' => array(
+//                    array('name' => 'int'),
+//                ),
+//            ));
 
             // Username
             $inputFilter->add(array(
