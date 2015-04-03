@@ -29,15 +29,27 @@ class UserTable
 		return $row;
 	}
 
-	public function getUserByUsername($username)
+	public function getUserPasswordHash($username)
 	{
 		$username = (string) $username;
 		$rowset = $this->tableGateway->select(array('username' => $username));
 		$row = $rowset->current();
 		if (!$row) {
-			throw new \Exception("Could not find user has username $username");
+			throw new \Exception("Could not find user has ID = $username");
 		}
-		return $row;
+		return $row->password;
+	}
+
+	public function loginUser (User $user)
+	{
+		$password_hash = $this->getUserPasswordHash($user->username);
+
+		if ($password_hash) {
+			return password_verify($user->password, $password_hash);
+		}
+		else {
+			return FALSE;
+		}
 	}
 
 	public function saveUser(User $user)
