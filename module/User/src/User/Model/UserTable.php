@@ -18,13 +18,24 @@ class UserTable
 		return $resultSet;
 	}
 
-	public function getUser($id)
+	public function getUserById($id)
 	{
 		$id = (int) $id;
 		$rowset = $this->tableGateway->select(array('id' => $id));
 		$row = $rowset->current();
 		if (!$row) {
 			throw new \Exception("Could not find user has ID = $id");
+		}
+		return $row;
+	}
+
+	public function getUserByUsername($username)
+	{
+		$username = (string) $username;
+		$rowset = $this->tableGateway->select(array('username' => $username));
+		$row = $rowset->current();
+		if (!$row) {
+			throw new \Exception("Could not find user has username $username");
 		}
 		return $row;
 	}
@@ -47,7 +58,7 @@ class UserTable
 			$update_data['creator_id'] = $id;
 			$this->tableGateway->update($update_data, array('id' => $id));
 		} else {
-            if ($this->getUser($id)) {
+            if ($this->getUserById($id)) {
             	$data['updated_at'] = date("Y-m-d H:i:s");
                 $this->tableGateway->update($data, array('id' => $id));
             } else {
