@@ -94,7 +94,7 @@ class UserController extends AbstractActionController
     public function registerAction()
     {
         $view = new ViewModel();
-//        $view->setTemplate('user/user/add.phtml')
+//        $view->setTemplate('user/user/index.phtml');
 //        $view->setTerminal(true);
         $form = new UserForm();
         $form->get('submit')->setValue('Register');
@@ -218,5 +218,4 @@ class UserController extends AbstractActionController
             'user' => $this->getUserTable()->getUserById($id),
         );
     }
-
 }

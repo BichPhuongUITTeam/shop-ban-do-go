@@ -29,7 +29,7 @@ class UserTable
 		return $row;
 	}
 
-	public function getUserByUsername($username)
+	public function getUserPasswordHash($username)
 	{
 		$username = (string) $username;
 		$rowset = $this->tableGateway->select(array('username' => $username));
