@@ -1,7 +1,7 @@
 <?php
-// module/User/view/user/user/add.phtml:
+// module/User/view/user/user/register.phtml:
 
-$title = 'Đăng ký tài khoản';
+$title = 'Register Account';
 $this->headTitle($title);
 ?>
 <?php
@@ -29,6 +29,10 @@ $form->prepare();
     <div class="form-group">
         <label for="password">Password*</label>
         <?php echo $this->formRow($form->get('password')); ?>
+    </div>
+    <div class="form-group">
+        <label for="confirm_password">Confirm Password*</label>
+        <?php echo $this->formRow($form->get('confirm_password')); ?>
     </div>
     <div class="form-group">
         <?php echo $this->formSubmit($form->get('submit')); ?>
