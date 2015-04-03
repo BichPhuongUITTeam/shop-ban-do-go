@@ -49,6 +49,19 @@ class UserForm extends Form
         ));
 
         $this->add(array(
+            'name' => 'confirm_password',
+            'type' => 'Password',
+            'attributes' => array(
+                'class' => 'form-control',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'remember_me',
+            'type' => 'checkbox',
+        ));
+
+        $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
