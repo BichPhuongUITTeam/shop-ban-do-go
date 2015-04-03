@@ -83,11 +83,12 @@ class User implements InputFilterAwareInterface
                 ),
                 'validators' => array(
                     array(
-                        'name' => 'StringLength',
+                        'name' => 'Alpha',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 100,
+                            'allowWhiteSpace' => true,
+                            // 'min' => 0,
+                            // 'max' => 100,
                         ),
                     ),
                 ),
