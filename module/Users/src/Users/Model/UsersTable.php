@@ -29,6 +29,16 @@ class UsersTable
         }
     }
 
+    public function getUserFullName($username)
+    {
+        $username = (string)$username;
+        $rowset = $this->tableGateway->select(array('username' => $username));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find user has username $username");
+        }
+        return $row->full_name;
+    }
     public function getUserPasswordHash($username)
     {
         $username = (string)$username;
@@ -38,6 +48,18 @@ class UsersTable
             throw new \Exception("Could not find user has username $username");
         }
         return $row->password;
+    }
+
+    public function verifyUserPassword($password, $hash)
+    {
+        $verify = password_verify($password, $hash);
+        $result = ($verify) ? $password : $this->hashPassword($password);
+        return $result;
+    }
+
+    public function hashPassword($password)
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
     }
 
     public function saveUser(Users $user)
