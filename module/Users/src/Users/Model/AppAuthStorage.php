@@ -11,11 +11,12 @@ use Zend\Authentication\Storage;
 
 class AppAuthStorage extends Storage\Session
 {
-    public function setRememberMe($rememberMe = 0, $timeOut = 86400)
+    public function setRememberMe($rememberMe = 0, $timeOut = 900)
     {
         if ($rememberMe == 1) {
-            $this->session->getManager()->rememberMe(5);
+            $timeOut = 86400;
         }
+        $this->session->getManager()->rememberMe($timeOut);
     }
 
     public function forgetMe()
