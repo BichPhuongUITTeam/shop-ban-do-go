@@ -5,7 +5,7 @@
  * Time: 12:33 AM
  */
 
-namespace User\Model;
+namespace Users\Model;
 
 use Zend\Authentication\Storage;
 
@@ -14,7 +14,7 @@ class AppAuthStorage extends Storage\Session
     public function setRememberMe($rememberMe = 0, $timeOut = 86400)
     {
         if ($rememberMe == 1) {
-            $this->session->getManager()->rememberMe($timeOut);
+            $this->session->getManager()->rememberMe(5);
         }
     }
 

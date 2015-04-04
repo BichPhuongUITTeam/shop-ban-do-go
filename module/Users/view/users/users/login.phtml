@@ -1,11 +1,12 @@
 <?php
-// module/User/view/user/user/login.phtml:
+// module/Users/view/users/users/login.phtml:
 
 $title = 'Login';
 $this->headTitle($title);
 ?>
 <?php
-$form->setAttribute('action', $this->url('user', array('action' => 'login')));
+$form->setAttribute('action', $this->url('users', array('action' => 'authenticate')));
+//$form->setAttribute('action', $this->url('users', array('action' => 'login')));
 $form->prepare();
 ?>
 <div class="col-md-4 col-md-offset-4">
@@ -29,18 +30,18 @@ $form->prepare();
     </div>
     <div class="form-group">
         <?php echo $this->formSubmit($form->get('submit')); ?>
-        <a href="<?php echo $this->url('user', array('action' => 'index'));?>" class="btn btn-danger">Cancel</a>
+        <a href="<?php echo $this->url('users', array('action' => 'index')); ?>" class="btn btn-danger">Cancel</a>
     </div>
     <?php echo $this->form()->closeTag(); ?>
 </div>
 <div class="row">
     <?php
-        if ($this->message) {
-            echo '<ul>';
-            foreach ($this->message as $message) {
-                echo '<li>' . $message . '</li>';
-            }
-            echo '</ul>';
+    if ($this->message) {
+        echo '<ul>';
+        foreach ($this->message as $message) {
+            echo '<li>' . $message . '</li>';
         }
+        echo '</ul>';
+    }
     ?>
 </div>

@@ -7,7 +7,7 @@ return array(
     'modules' => array(
         'Application',
         'Album',
-        'User',
+        'Users',
         'ZendDeveloperTools',
         'BjyProfiler',
         'SanSessionToolbar',

@@ -1,0 +1,28 @@
+<?php
+// module/Users/view/users/users/index.phtml:
+$title = 'User Panel';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('users', array('action' => 'add')); ?>" class="btn btn-default">Add new user</a>
+</p>
+<div class="container">
+    <div class="row">
+        <?php foreach ($users as $user) : ?>
+            <div class="col-md-4 user-tile">
+                <li>Username: <?php echo $this->escapeHtml($user->username); ?></li>
+                <li>Email: <?php echo $this->escapeHtml($user->email); ?></li>
+                <li>Full name: <?php echo $this->escapeHtml($user->full_name); ?></li>
+                <li>Created at: <?php echo $this->escapeHtml($user->created_at); ?></li>
+                <!-- <li><?php // echo $this->escapeHtml($user->creator);?></li> -->
+                <div class="row">
+                    <a href="<?php echo $this->url('users',
+                        array('action' => 'edit', 'id' => $user->id)); ?>" class="btn btn-primary">Edit</a>
+                    <a href="<?php echo $this->url('users',
+                        array('action' => 'delete', 'id' => $user->id)); ?>" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+</div>

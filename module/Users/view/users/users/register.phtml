@@ -1,11 +1,11 @@
 <?php
-// module/User/view/user/user/register.phtml:
+// module/Users/view/users/users/register.phtml:
 
 $title = 'Register Account';
 $this->headTitle($title);
 ?>
 <?php
-$form->setAttribute('action', $this->url('user', array('action' => 'register')));
+$form->setAttribute('action', $this->url('users', array('action' => 'register')));
 $form->prepare();
 ?>
 <div class="col-md-4 col-md-offset-4">
@@ -36,6 +36,6 @@ $form->prepare();
     </div>
     <div class="form-group">
         <?php echo $this->formSubmit($form->get('submit')); ?>
-        <a href="<?php echo $this->url('user', array('action' => 'index'));?>" class="btn btn-danger">Cancel</a>
+        <a href="<?php echo $this->url('users', array('action' => 'index')); ?>" class="btn btn-danger">Cancel</a>
     </div>
     <?php echo $this->form()->closeTag(); ?>

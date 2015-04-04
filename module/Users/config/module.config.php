@@ -3,7 +3,7 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'User\Controller\User' => 'User\Controller\UserController',
+            'Users\Controller\Users' => 'Users\Controller\UsersController',
         ),
     ),
 
@@ -12,24 +12,24 @@ return array(
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/',
+                    'route' => '/',
                     'defaults' => array(
-                        'controller' => 'User\Controller\User',
-                        'action'     => 'index',
+                        'controller' => 'Users\Controller\Users',
+                        'action' => 'index',
                     ),
                 ),
             ),
-            'user' => array(
-                'type'    => 'segment',
+            'users' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/user[/:action][/:id]',
+                    'route' => '/users[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
+                        'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'User\Controller\User',
-                        'action'     => 'index',
+                        'controller' => 'Users\Controller\Users',
+                        'action' => 'index',
                     ),
                 ),
             ),
@@ -39,12 +39,12 @@ return array(
     'view_manager' => array(
         'template_map' => array(
             // 'layout/layout'           => __DIR__ . '/../view/layout/custom_layout.phtml',
-            'layout/layout'           => __DIR__ . '/../view/layout/layout.phtml',
-            'error/404'               => __DIR__ . '/../view/error/404.phtml',
-            'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
+            'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/index' => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
-            'user' => __DIR__ . '/../view',
+            'users' => __DIR__ . '/../view',
         ),
     ),
 );

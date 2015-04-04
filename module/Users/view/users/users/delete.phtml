@@ -1,5 +1,5 @@
 <?php
-// module/Album/view/user/user/add.phtml:
+// module/Users/view/users/users/add.phtml:
 
 $title = 'Delete user';
 $this->headTitle($title);
@@ -11,7 +11,7 @@ $this->headTitle($title);
         <strong><?php echo $this->escapeHtml($user->username); ?></strong>?
     </p>
     <?php
-    $url = $this->url('user', array(
+    $url = $this->url('users', array(
         'action' => 'delete',
         'id' => $this->id,
     ));

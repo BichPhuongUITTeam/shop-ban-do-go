@@ -1,6 +1,6 @@
 <?php
 
-namespace User\Form;
+namespace Users\Form;
 
 use Zend\Form\Form;
 
@@ -8,7 +8,7 @@ class UserForm extends Form
 {
     public function __construct($name = null)
     {
-        parent::__construct('user');
+        parent::__construct('users');
         $this->setAttribute('method', 'post');
 
         $this->add(array(

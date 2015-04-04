@@ -1,11 +1,11 @@
 <?php
-namespace User\Model;
+namespace Users\Model;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class User implements InputFilterAwareInterface
+class Users implements InputFilterAwareInterface
 {
     public $id;
     public $username;
@@ -230,7 +230,7 @@ class User implements InputFilterAwareInterface
                 ),
             ));
 
-           // Remember me
+            // Remember me
             $inputFilter->add(array(
                 'name' => 'remember_me',
                 'required' => false,
