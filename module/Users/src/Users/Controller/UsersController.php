@@ -73,7 +73,7 @@ class UsersController extends AbstractActionController
     {
         $loggedIn = $this->isLoggedIn();
         if ($loggedIn) {
-            return $this->indexAction();
+            return $this->redirect()->toRoute('users');
         } else {
             $view = new ViewModel();
             $form = new LoginForm();
