@@ -1,9 +1,10 @@
 <?php
+
 $dbParams = array(
-    'database'  => 'shopdogo',
-    'username'  => 'root',
-    'password'  => 'root',
-    'hostname'  => 'localhost',
+    'database' => 'shopdogo',
+    'username' => 'root',
+    'password' => 'root',
+    'hostname' => 'localhost',
     // buffer_results - only for mysqli buffered queries, skip for others
     'options' => array('buffer_results' => true)
 );
@@ -13,12 +14,15 @@ return array(
         'factories' => array(
             'Zend\Db\Adapter\Adapter' => function ($sm) use ($dbParams) {
                 $adapter = new BjyProfiler\Db\Adapter\ProfilingAdapter(array(
-                    'driver'    => 'pdo',
-                    'dsn'       => 'mysql:dbname='.$dbParams['database'].';host='.$dbParams['hostname'],
-                    'database'  => $dbParams['database'],
-                    'username'  => $dbParams['username'],
-                    'password'  => $dbParams['password'],
-                    'hostname'  => $dbParams['hostname'],
+                    'driver' => 'pdo',
+                    'driver_options' => array(
+                        PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\'',
+                    ),
+                    'dsn' => 'mysql:dbname=' . $dbParams['database'] . ';host=' . $dbParams['hostname'],
+                    'database' => $dbParams['database'],
+                    'username' => $dbParams['username'],
+                    'password' => $dbParams['password'],
+                    'hostname' => $dbParams['hostname'],
                 ));
 
                 if (php_sapi_name() == 'cli') {
@@ -38,6 +42,7 @@ return array(
                 $adapter->injectProfilingStatementPrototype($options);
                 return $adapter;
             },
-        ),
-    ),
-);
+                ),
+            ),
+        );
+        
