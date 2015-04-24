@@ -1,6 +1,7 @@
 <?php
 namespace Users\Model;
 
+use Zend\Crypt\Password\Bcrypt;
 use Zend\Db\TableGateway\TableGateway;
 
 class UsersTable
@@ -52,23 +53,28 @@ class UsersTable
 
     public function verifyUserPassword($password, $hash)
     {
-        $verify = password_verify($password, $hash);
+        $bcrypt = new Bcrypt();
+        $verify = $bcrypt->verify($password, $hash);
         $result = ($verify) ? $password : $this->hashPassword($password);
         return $result;
     }
 
     public function hashPassword($password)
     {
-        return password_hash($password, PASSWORD_DEFAULT);
+        $bcrypt = new Bcrypt();
+        return $bcrypt->create($password);
     }
 
     public function saveUser(Users $user)
     {
+        $password = $user->password;
+        $bcrypt = new Bcrypt();
+        $hashed_password = $bcrypt->create($password);
         $data = array(
             'username' => $user->username,
             'email' => $user->email,
             'full_name' => $user->full_name,
-            'password' => password_hash($user->password, PASSWORD_DEFAULT),
+            'password' => $hashed_password,
         );
 
         $id = (int)$user->id;
@@ -96,6 +102,16 @@ class UsersTable
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find user has ID = $id");
+        }
+        return $row;
+    }
+
+    public function getUserByUsername($username)
+    {
+        $rowset = $this->tableGateway->select(array('username' => $username));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find user has username $username");
         }
         return $row;
     }

@@ -3,12 +3,12 @@ namespace Users;
 
 use Users\Model\Users;
 use Users\Model\UsersTable;
-use Zend\Authentication\Adapter\DbTable;
 use Zend\Authentication\AuthenticationService;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\Authentication\Adapter\DbTable as AuthAdapter;
 
 class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
@@ -46,15 +46,17 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
                     $resultSetPrototype->setArrayObjectPrototype(new Users());
                     return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
                 },
-                'Users\Model\AppAuthStorage' => function ($sm) {
-                    return new \Users\Model\AppAuthStorage("honviet_com_session");
+                'Users\Model\AuthStorage' => function ($sm) {
+                    return new \Users\Model\AuthStorage("app_session");
                 },
+//                use Zend\Authentication\Adapter\DbTable\CallbackCheckAdapter;
+//use Zend\Authentication\Adapter\DbTable\CredentialTreatmentAdapter;
                 'AuthService' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $dbTable = new DbTable($dbAdapter, 'users', 'username', 'password');
+                    $dbTable = new AuthAdapter($dbAdapter, 'users', 'username', 'password');
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbTable);
-                    $authService->setStorage($sm->get('Users\Model\AppAuthStorage'));
+                    $authService->setStorage($sm->get('Users\Model\AuthStorage'));
                     return $authService;
                 }
             ),

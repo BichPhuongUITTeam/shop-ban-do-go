@@ -9,7 +9,7 @@ namespace Users\Model;
 
 use Zend\Authentication\Storage;
 
-class AppAuthStorage extends Storage\Session
+class AuthStorage extends Storage\Session
 {
     public function setRememberMe($rememberMe = 0, $timeOut = 900)
     {
