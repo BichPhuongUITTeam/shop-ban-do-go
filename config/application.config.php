@@ -6,8 +6,8 @@ return array(
     // This should be an array of module namespaces used in the application.
     'modules' => array(
         'Application',
-        'Album',
         'Users',
+        'Album',
         'ZendDeveloperTools',
         'BjyProfiler',
         'SanSessionToolbar',
